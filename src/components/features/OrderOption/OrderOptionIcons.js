@@ -31,5 +31,3 @@ OrderOptionIcons.propTypes = {
   currentValue: PropTypes.string,
   setOptionValue: PropTypes.func,
 };
-
-export default OrderOptionIcons;

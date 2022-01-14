@@ -24,5 +24,3 @@ import React from 'react';
     currentValue: PropTypes.string,
     setOptionValue: PropTypes.func,
   };
-
-  export default OrderOptionDropdown;

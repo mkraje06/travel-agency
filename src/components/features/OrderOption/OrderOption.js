@@ -32,4 +32,7 @@ const optionTypes = {
 
   OrderOption.propTypes = {
     name: PropTypes.string,
+    type: PropTypes.string,
+    id: PropTypes.string,
+    setOrderOption: PropTypes.func,
   };
