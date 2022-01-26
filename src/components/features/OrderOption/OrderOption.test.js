@@ -17,7 +17,6 @@ describe('Component OrderOption', () => {
     expect(component.find('.title').text()).toEqual(expectedName);
   });
 });
-
 const optionTypes = {
   dropdown: 'OrderOptionDropdown',
   icons: 'OrderOptionIcons',
@@ -26,7 +25,6 @@ const optionTypes = {
   text: 'OrderOptionText',
   date: 'OrderOptionDate',
 };
-
 const mockProps = {
   id: 'abc',
   name: 'Lorem',
@@ -42,7 +40,6 @@ const mockProps = {
     max: 6,
   },
 };
-
 const mockPropsForType = {
   dropdown: {},
   icons: {},
@@ -53,7 +50,7 @@ const mockPropsForType = {
 };
 
 const testValue = mockProps.values[1].id;
-//const testValueNumber = 3;
+const testValueNumber = 3;
 
 for(let type in optionTypes){
   describe(`Component OrderOption with type=${type}`, () => {
@@ -61,14 +58,14 @@ for(let type in optionTypes){
     let component;
     let subcomponent;
     let renderedSubcomponent;
-    let mockSetOrderOption; 
+    let mockSetOrderOption;
 
     beforeEach(() => {
-      mockSetOrderOption = jest.fn(); 
+      mockSetOrderOption = jest.fn();
       component = shallow(
         <OrderOption
           type={type}
-          setOrderOption={mockSetOrderOption} 
+          setOrderOption={mockSetOrderOption}
           {...mockProps}
           {...mockPropsForType[type]}
         />
@@ -77,11 +74,13 @@ for(let type in optionTypes){
       renderedSubcomponent = subcomponent.dive();
     });
     /* common tests */
+    it('passes dummy test', () => {
+      expect(1).toBe(1);
+    });
     it(`renders ${optionTypes[type]}`, () => {
       expect(subcomponent).toBeTruthy();
       expect(subcomponent.length).toBe(1);
     });
-
     /* type-specific tests */
     switch (type) {
       case 'dropdown': {
@@ -102,6 +101,63 @@ for(let type in optionTypes){
           renderedSubcomponent.find('select').simulate('change', {currentTarget: {value: testValue}});
           expect(mockSetOrderOption).toBeCalledTimes(1);
           expect(mockSetOrderOption).toBeCalledWith({ [mockProps.id]: testValue });
+        });
+        break;
+      }
+      case 'number': {
+        it('contains input with correct props', () => {
+          const input = renderedSubcomponent.find('input');
+          expect(input.length).toBe(1);
+          expect(input.prop('value')).toBe(
+            mockPropsForType.number.currentValue
+          );
+          expect(input.prop('min')).toBe(mockProps.limits.min);
+          expect(input.prop('max')).toBe(mockProps.limits.max);
+        });
+
+        it('should run setOrderOption function on change', () => {
+          renderedSubcomponent
+            .find('input')
+            .simulate('change', { currentTarget: { value: testValueNumber } });
+          expect(mockSetOrderOption).toBeCalledTimes(1);
+          expect(mockSetOrderOption).toBeCalledWith({
+            [mockProps.id]: testValueNumber,
+          });
+        });
+        break;
+      }
+
+      case 'text': {
+        it('contains input with correct props', () => {
+          const input = renderedSubcomponent.find('input');
+          expect(input.length).toBe(1);
+        });
+
+        it('should run setOrderOption function on change', () => {
+          renderedSubcomponent
+            .find('input')
+            .simulate('change', { currentTarget: { value: testValueNumber } });
+          expect(mockSetOrderOption).toBeCalledTimes(1);
+          expect(mockSetOrderOption).toBeCalledWith({
+            [mockProps.id]: testValueNumber,
+          });
+        });
+        break;
+      }
+
+      case 'icon': {
+        it('contains input with correct props', () => {
+          const input = renderedSubcomponent.find('input');
+          expect(input.length).toBe(1);
+
+        it('should run setOrderOption function on change', () => {
+          renderedSubcomponent
+            .find('input')
+            .simulate('change', { currentTarget: { value: testValueNumber } });
+          expect(mockSetOrderOption).toBeCalledTimes(1);
+          expect(mockSetOrderOption).toBeCalledWith({
+            [mockProps.id]: testValueNumber,
+          });
         });
         break;
       }
