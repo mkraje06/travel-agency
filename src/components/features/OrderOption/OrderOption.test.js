@@ -166,17 +166,28 @@ for(let type in optionTypes){
       case 'checkboxes': {
         it('contains input with correct props', () => {
           const element = renderedSubcomponent.find('.checkboxes');
-          expect(element.length).toBe(2);
-          expect(element.find('Icon').at(0).prop('name')).toBe(
-            mockProps.values[0].icon
+
+          expect(element.find('input').at(0).prop('value')).toBe(
+            mockProps.values[0].id
+          );
+          expect(element.find('input').at(0).prop('checked')).toBe(
+            mockProps.currentValue.includes(mockProps.values[0].id)
+          );
+          expect(element.find('input').at(1).prop('value')).toBe(
+            mockProps.values[1].id
+          );
+          expect(element.find('input').at(1).prop('checked')).toBe(
+            mockProps.currentValue.includes(mockProps.values[1].id)
           );
         });
 
-        it('should run setOrderOption function on click', () => {
-          renderedSubcomponent.find('div .icon').at(1).simulate('click');
+        it('should run setOrderOption function on change', () => {
+          renderedSubcomponent
+            .find(`input[value="${testValue}"]`)
+            .simulate('change', { currentTarget: { checked: true } });
           expect(mockSetOrderOption).toBeCalledTimes(1);
           expect(mockSetOrderOption).toBeCalledWith({
-            [mockProps.id]: testValue,
+            [mockProps.id]: [mockProps.currentValue, testValue],
           });
         });
         break;
