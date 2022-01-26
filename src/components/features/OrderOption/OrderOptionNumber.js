@@ -15,7 +15,7 @@ export const OrderOptionNumber = (currentValue, limits, setOptionValue, price) =
       max={limits.max}
       onChange={event => setOptionValue(event.currentTarget.value)}
       >
-      </input>
+      </input> {` Price: ${formatPrice(price)}`}
     </div>
   };
 
