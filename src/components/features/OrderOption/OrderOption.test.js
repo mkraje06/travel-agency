@@ -31,8 +31,8 @@ const mockProps = {
   id: 'abc',
   name: 'Lorem',
   values: [
-    {id: 'aaa', icon: 'h-square', name: 'Lorem A', price: 0},
-    {id: 'xyz', icon: 'h-square', name: 'Lorem X', price: 100},
+    { id: 'aaa', icon: 'h-square', name: 'Lorem A', price: 0 },
+    { id: 'xyz', icon: 'h-square', name: 'Lorem X', price: 100 },
   ],
   required: false,
   currentValue: 'aaa',
@@ -45,8 +45,8 @@ const mockProps = {
 const mockPropsForType = {
   dropdown: {},
   icons: {},
-  checkboxes: {currentValue: [mockProps.currentValue]},
-  number: {currentValue: 1},
+  checkboxes: { currentValue: [mockProps.currentValue] },
+  number: { currentValue: 1 },
   text: {},
   date: {},
 };
@@ -54,7 +54,7 @@ const mockPropsForType = {
 const testValue = mockProps.values[1].id;
 const testValueNumber = 3;
 
-for(let type in optionTypes){
+for (let type in optionTypes) {
   describe(`Component OrderOption with type=${type}`, () => {
     /* test setup */
     let component;
@@ -100,7 +100,7 @@ for(let type in optionTypes){
           expect(options.at(1).prop('value')).toBe(mockProps.values[1].id);
         });
         it('should run setOrderOption function on change', () => {
-          renderedSubcomponent.find('select').simulate('change', {currentTarget: {value: testValue}});
+          renderedSubcomponent.find('select').simulate('change', { currentTarget: { value: testValue } });
           expect(mockSetOrderOption).toBeCalledTimes(1);
           expect(mockSetOrderOption).toBeCalledWith({ [mockProps.id]: testValue });
         });
@@ -154,9 +154,10 @@ for(let type in optionTypes){
           expect(element.find('Icon').at(0).prop('name')).toBe(
             mockProps.values[0].icon
           );
+        })
 
-          it('should run setOrderOption function on click', () => {
-            renderedSubcomponent.find('div .icon').at(1).simulate('click');
+        it('should run setOrderOption function on click', () => {
+          renderedSubcomponent.find('div .icon').at(1).simulate('click');
           expect(mockSetOrderOption).toBeCalledTimes(1);
           expect(mockSetOrderOption).toBeCalledWith({
             [mockProps.id]: testValue,
@@ -201,11 +202,10 @@ for(let type in optionTypes){
           expect(element.length).toBe(1);
         });
 
-        it('should run setOrderOption function on click', () => {
-          renderedSubcomponent.find('div .icon').at(1).simulate('click');
-          it('should run setOrderOption function on change', () => {
-            const element = renderedSubcomponent.find(DatePicker);
-            element.simulate('change', testValue);
+
+        it('should run setOrderOption function on change', () => {
+          const element = renderedSubcomponent.find(DatePicker);
+          element.simulate('change', testValue);
           expect(mockSetOrderOption).toBeCalledTimes(1);
           expect(mockSetOrderOption).toBeCalledWith({
             [mockProps.id]: testValue,
@@ -214,5 +214,5 @@ for(let type in optionTypes){
         break;
       }
     }
-  });
+  })
 }

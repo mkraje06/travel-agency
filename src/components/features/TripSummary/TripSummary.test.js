@@ -4,9 +4,9 @@ import TripSummary from './TripSummary';
 
 describe('Component TripSummary', () => {
   it('should render without crashing', () => {
-    const expectedAdress = 'trip/abc';
+    const expectedAdress = '/trip/abc';
     const expectedId = 'abc';
-    const component = shallow(<TripSummary id={expectedId} />);
+    const component = shallow(<TripSummary id={expectedId} tags={[]} />);
     expect(component.find('Link').prop('to')).toEqual(expectedAdress);
   });
 });
