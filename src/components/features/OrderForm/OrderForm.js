@@ -9,12 +9,15 @@ import { formatPrice } from '../../../utils/formatPrice';
 import settings from '../../../data/settings';
 import Button from '../../common/Button/Button';
 
-const sendOrder = (options, tripCost) => {
+const sendOrder = (options, tripCost,tripId, tripName, countryCode) => {
   const totalCost = formatPrice(calculateTotal(tripCost, options));
 
   const payload = {
     ...options,
     totalCost,
+    tripName,
+    tripId,
+    countryCode,
   };
 
   const url = settings.db.url + '/' + settings.db.endpoint.orders;
@@ -27,22 +30,24 @@ const sendOrder = (options, tripCost) => {
     },
     body: JSON.stringify(payload),
   };
-
-  fetch(url, fetchOptions)
-    .then(function(response){
-      return response.json();
-    }).then(function(parsedResponse){
-      console.log('parsedResponse', parsedResponse);
-    });
+  if (payload.name === '' || payload.contact === '') {
+    alert('Name and contact must be filled in the form!');
+  } else {
+    fetch(url, fetchOptions)
+      .then(function(response){
+        return response.json();
+      }).then(function(parsedResponse){
+        console.log('parsedResponse', parsedResponse);
+      });
+  }
 };
 
-
-const OrderForm = ({ tripCost, options, setOrderOption,  tripName, countryCode }) => (
+const OrderForm = ({ tripCost, options, setOrderOption,  tripName, countryCode, tripId }) => (
     <Grid>
         <Row>
             {pricing.map((option) => (
                 <Col md={4} key={option.id}>
-                    <OrderOption
+                    <OrderOption key={option.name}
                     {...option}
                     currentValue={options[option.id]}
                     setOrderOption={setOrderOption}
@@ -53,7 +58,7 @@ const OrderForm = ({ tripCost, options, setOrderOption,  tripName, countryCode }
                 <OrderSummary tripCost={tripCost} tripOptions={options} />
             </Col>
         </Row>
-        <Button onClick={() => sendOrder(options, tripCost, tripName, countryCode)}>Order now!</Button>
+        <Button onClick={() => sendOrder(options, tripCost, tripName, countryCode, tripId)}>Order now!</Button>
     </Grid>
 );
 
@@ -63,6 +68,7 @@ OrderForm.propTypes = {
     setOrderOption: PropTypes.node,
     tripName: PropTypes.string,
     countryCode: PropTypes.string,
+    tripId: PropTypes.string,
 };
 
 export default OrderForm;
