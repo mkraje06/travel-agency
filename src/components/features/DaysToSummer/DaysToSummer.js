@@ -12,15 +12,37 @@ class DaysToSummer extends React.Component {
   };
 
   static defaultProps = {
-    title: "21 days to summer!",
+    title: " ",
   };
 
   render() {
+    const days = this.getCountdownDay();
     return (
       <div className={styles.component}>
-        <h3 className={styles.summerDays}>{this.props.title}</h3>
+        <h3 className={styles.summerDays}>
+          {days}
+          {this.props.title}
+        </h3>
       </div>
     );
+  }
+
+  getCountdownDay() {
+    const currentDay = new Date();
+    const summerDay = new Date("July 21, 2022");
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const timeLeft = summerDay.getTime() - currentDay.getTime();
+    const e_daysLeft = timeLeft / msPerDay;
+    let daysLeft = Math.floor(e_daysLeft);
+    console.log(currentDay);
+    if (daysLeft > 365) {
+      daysLeft = daysLeft % 365;
+      return daysLeft + " days to summer!";
+    } else if (daysLeft == 1) {
+      return daysLeft + " day to summer!";
+    } else {
+      return daysLeft + " days to summer!";
+    }
   }
 }
 export default DaysToSummer;
